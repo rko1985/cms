@@ -26,8 +26,8 @@
 
                 <?php 
                 
-                $query = "SELECT * FROM categories";
-                        $select_categories_sidebar = mysqli_query($connection, $query);
+                    $query = "SELECT * FROM categories";
+                    $select_categories_sidebar = mysqli_query($connection, $query);
                      
                               
                 
