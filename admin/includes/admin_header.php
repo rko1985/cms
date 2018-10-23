@@ -1,6 +1,17 @@
 <?php ob_start(); ?>
 <?php include("../includes/db.php"); ?>
 <?php include("functions.php"); ?>
+<?php session_start(); //starts a PHP session ?>
+
+<?php 
+
+    if(!isset($_SESSION['user_role'])){ //checks if user role is not set and if not go to index
+
+            header("Location: ../index.php");
+        
+    } 
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
