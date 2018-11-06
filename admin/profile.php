@@ -53,7 +53,6 @@
  
          $user_firstname = $_POST['user_firstname'];
          $user_lastname = $_POST['user_lastname'];
-         $user_role = $_POST['user_role'];
  
          // $post_image = $_FILES['image']['name'];
          // $post_image_temp = $_FILES['image']['tmp_name'];
@@ -68,7 +67,6 @@
          $query = "UPDATE users SET ";
          $query .= "user_firstname = '{$user_firstname}', ";
          $query .= "user_lastname = '{$user_lastname}', ";
-         $query .= "user_role = '{$user_role}', ";
          $query .= "username = '{$username}', ";
          $query .= "user_email = '{$user_email}', ";
          $query .= "user_password = '{$user_password}' ";
@@ -118,34 +116,6 @@
                                 <input type="text" class="form-control" value="<?php echo $user_lastname?>" name="user_lastname">
                             </div>
 
-                            <div class="form-group">
-                                <select name="user_role" id="">
-                                    <option value="subscriber"><?php echo $user_role; ?></option>
-                                <?php 
-
-                                    if($user_role == 'admin'){                
-                                        echo "<option value='subscriber'>subscriber</option>";
-                                    } else {
-                                        echo "<option value='admin'>admin</option>";
-
-                                    }
-                                ?>
-
-                                
-                                    
-                                    
-                                </select>    
-                            </div>
-
-
-
-
-
-                            <!-- <div class="form-group">
-                                <label for="post_image">Post Image</label>
-                                <input type="file" name="image">
-                            </div> -->
-
 
                             <div class="form-group">
                                 <label for="post_tags">Username</label>
@@ -158,7 +128,7 @@
 
                             <div class="form-group">
                                 <label for="post_content">Password</label>
-                                <input type="password" class="form-control" value="<?php echo $user_password?>" name="user_password">
+                                <input autocomplete="off" type="password" class="form-control" name="user_password">
                             </div>
                             <div class="form-group">
                                 <input class="btn btn-primary" type="submit" name="edit_user"  value="Update Profile">

@@ -31,9 +31,9 @@ if(isset($_POST['login'])){
 
     }
 
-    $password = crypt($password, $db_user_password); //decrypts password
+    // $password = crypt($password, $db_user_password); //decrypts password
 
-    if($username === $db_username && $password === $db_user_password){ //checks username and password if exactly identical
+    if(password_verify($password, $db_user_password)){ //checks username and password if exactly identical
 
         $_SESSION['username'] = $db_username; //sets session variables for admin_header
         $_SESSION['firstname'] = $db_user_firstname;

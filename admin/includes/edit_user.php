@@ -18,34 +18,33 @@
             $user_role = $row['user_role'];
        }
 
-    }
+    
 
     if(isset($_POST['edit_user'])){
 
         $user_firstname = $_POST['user_firstname'];
         $user_lastname = $_POST['user_lastname'];
         $user_role = $_POST['user_role'];
-
-        // $post_image = $_FILES['image']['name'];
-        // $post_image_temp = $_FILES['image']['tmp_name'];
-
         $username = $_POST['username'];
         $user_email = $_POST['user_email'];
         $user_password = $_POST['user_password'];
-        // $post_date = date('d-m-y');
+        $post_date = date('d-m-y');
 
-        // move_uploaded_file($post_image_temp, "../images/$post_image");
+        if(!empty($user_password)){
 
-        $query = "SELECT randSalt FROM users";
-        $select_randsalt_query = mysqli_query($connection, $query);
-        if(!$select_randsalt_query){
-            die("Query Failed " . mysqli_error($connection));
-        }
+        $query_password = "SELECT user_password FROM users WHERE user_id = $the_user_id";
+        $get_user_query = mysqli_query($connection, $query_password);
+        confirmQuery($get_user_query);
 
-        $row = mysqli_fetch_array($select_randsalt_query);
-        $salt = $row['randSalt'];
-        $hashed_password = crypt($user_password, $salt);
+        $row = mysqli_fetch_array($get_user_query);
 
+        $db_user_password = $row['user_password'];
+            
+            if($db_user_password != $user_password){
+                $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
+            }
+
+        
         $query = "UPDATE users SET ";
         $query .= "user_firstname = '{$user_firstname}', ";
         $query .= "user_lastname = '{$user_lastname}', ";
@@ -59,7 +58,19 @@
         $edit_user_query = mysqli_query($connection, $query);
 
         confirmQuery($edit_user_query);
+
+        echo "User Updated" . " <a href='users.php'>View Users?</a>";
+
+        }
+
+        
     }
+
+} else {
+
+    header("Location: index.php");
+
+}
 
 ?>
 
@@ -114,7 +125,7 @@
 
     <div class="form-group">
         <label for="post_content">Password</label>
-        <input type="password" class="form-control" value="<?php echo $user_password?>" name="user_password">
+        <input autocomplete="off" type="password" class="form-control"  name="user_password">
     </div>
     <div class="form-group">
         <input class="btn btn-primary" type="submit" name="edit_user"  value="Update User">
