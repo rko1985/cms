@@ -42,9 +42,26 @@
 
                 }
 
-                $post_query_count = "SELECT * FROM posts"; //finding count of all posts
+                if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'){
+
+                    $post_query_count = "SELECT * FROM posts ";
+
+                } else {
+
+                    $post_query_count = "SELECT * FROM posts WHERE post_status = 'published' ";
+
+                }
+
+
+                //finding count of all posts
                 $find_count = mysqli_query($connection, $post_query_count);
                 $count = mysqli_num_rows($find_count);
+
+                if($count < 1) {
+
+                    echo "<h1 class='text-center'>No Posts available</h1>";
+
+                } else {
                 
                 $count = ceil($count / $per_page); //finding number of pages by dividing post count/number of pages per post (counts and rounds up)
 
@@ -62,8 +79,7 @@
                     $post_content = substr($row['post_content'], 0, 100);
                     $post_status = $row['post_status'];
 
-                    if($post_status == 'published') {
-
+                   
 
                     ?>
 
@@ -92,7 +108,7 @@
 
 
                     
-                 <?php   }  }  ?>
+                 <?php }  }  ?>
 
 
 
