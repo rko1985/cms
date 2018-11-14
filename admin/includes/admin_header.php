@@ -8,7 +8,7 @@
     if(!isset($_SESSION['user_role'])){ //checks if user role is not set and if not go to index
 
             header("Location: ../index.php");
-        
+            
     } 
 
 ?>
