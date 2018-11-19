@@ -51,13 +51,10 @@
                     $stmt = $stmt2;
                 }
 
-                
-                
-                $select_all_posts_query = mysqli_query($connection, $query);
+                mysqli_stmt_store_result($stmt);
+                if(mysqli_stmt_num_rows($stmt) == 0) {
 
-                if(mysqli_stmt_num_rows($stmt) === 0) {
-
-                    echo "<h1 class='text-center'>No Posts available</h1>";
+                    echo "<h1 class='text-center'>No Categories available</h1>";
 
                 } 
 
@@ -90,7 +87,7 @@
 
 
                     
-                 <?php endwhile; mysqli_stmt_close($stmt); }  else {
+                 <?php endwhile;  mysqli_stmt_close($stmt); }  else {
 
 
                     header("Locations: index.php");
