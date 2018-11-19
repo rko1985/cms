@@ -76,14 +76,18 @@ function insert_categories() {
         if($cat_title == "" || empty($cat_title)) {
             echo "This field should not be empty";
         } else {
-            $query = "INSERT INTO categories(cat_title) ";
-            $query .= "VALUE('{$cat_title}') ";
-            $create_category_query = mysqli_query($connection, $query);
+            $stmt = mysqli_prepare($connection, "INSERT INTO categories(cat_title) VALUES(?) ");
 
-            if(!$create_category_query) {
+            mysqli_stmt_bind_param($stmt, 's', $cat_title);
+
+            mysqli_stmt_execute($stmt);
+
+            if(!$stmt) {
                 die('Query Failed'. mysqli_error($connection));
             }
         }
+
+        mysqli_stmt_close($stmt);
     } 
 
 
@@ -117,7 +121,11 @@ function deleteCategories(){
         $the_cat_id = $_GET['delete'];
 
         $query = "DELETE FROM categories WHERE cat_id = {$the_cat_id}";
-        $delete_query = mysqli_query($query);
+        $delete_query = mysqli_query($connection, $query);
+        if(!$delete_query){
+            echo mysqli_error($connection);
+            exit;
+        }
         header("Location: categories.php");
 
     }
