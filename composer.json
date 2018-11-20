@@ -1,0 +1,12 @@
+{
+    "name": "russe/cms",
+    "require": {
+        "phpmailer/phpmailer": "^6.0"
+    },
+    "authors": [
+        {
+            "name": "rko1985",
+            "email": "35703264+rko1985@users.noreply.github.com"
+        }
+    ]
+}

@@ -3,8 +3,37 @@
 function redirect($location){
 
     return header("Location:" . $location);
+    exit;
 
-} 
+}
+
+function ifItIsMethod($method = null){
+
+    if($_SERVER['REQUEST_METHOD'] == strtoupper($method)){
+        return true;
+    }
+    return false;
+}
+
+function isLoggedIn(){
+
+    if(isset($_SESSION['user_role'])){
+
+        return true;
+
+    }
+
+    return false;
+
+}
+
+function checkIfUserIsLoggedInAndRedirect($redirectLocation){
+
+    if(isLoggedIn()){
+        redirect($redirectLocation);
+    }
+
+}
 
 function escape($string) {
 
@@ -271,25 +300,27 @@ function login_user($username, $password){
     $db_user_lastname = $row['user_lastname'];
     $db_user_role = $row['user_role'];
 
+        if(password_verify($password, $db_user_password)){ //checks username and password if exactly identical
+
+            $_SESSION['username'] = $db_username; //sets session variables for admin_header
+            $_SESSION['firstname'] = $db_user_firstname;
+            $_SESSION['lastname'] = $db_user_lastname;
+            $_SESSION['user_role'] = $db_user_role;
+
+            redirect("/cms/admin"); //redirects to admin area if username and password is correct
+            
+        } else {
+            
+        return false; //redirects to index in any other situation
+
+
+        }
+
     }
 
     // $password = crypt($password, $db_user_password); //decrypts password
 
-    if(password_verify($password, $db_user_password)){ //checks username and password if exactly identical
-
-        $_SESSION['username'] = $db_username; //sets session variables for admin_header
-        $_SESSION['firstname'] = $db_user_firstname;
-        $_SESSION['lastname'] = $db_user_lastname;
-        $_SESSION['user_role'] = $db_user_role;
-
-        redirect("/cms/admin"); //redirects to admin area if username and password is correct
-        
-    } else {
-        
-        redirect("/cms/index.php"); //redirects to index in any other situation
-
-
-    }
+    return true;
 }
 
 ?>
