@@ -6,10 +6,9 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require './classes/Config.php';
 require './vendor/autoload.php';
 
-    if(!ifItIsMethod('get') && !isset($_GET['forgot'])){
+    if(!isset($_GET['forgot'])){
 
         redirect('index');
 
@@ -43,7 +42,8 @@ require './vendor/autoload.php';
                         $mail->Username = Config::SMTP_USER;                 // SMTP username
                         $mail->Password = Config::SMTP_PASSWORD;                           // SMTP password
                         $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-                        $mail->Port = Config::SMTP_PORT;                                    // TCP port to connect to
+                        $mail->Port = Config::SMTP_PORT; 
+                        $mail->CharSet = 'UTF-8';                                   // TCP port to connect to
                     
                         //Recipients
                         $mail->setFrom('edwin@codingfaculty.com', 'Edwin');
@@ -53,11 +53,16 @@ require './vendor/autoload.php';
                         //Content
                         $mail->isHTML(true);                                  // Set email format to HTML
                         $mail->Subject = 'Here is the subject';
-                        $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-                        $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+                        $mail->Body    = '<p>Please click to reset your password
+                        
+                        <a href="http://localhost/cms/reset.php?email='.$email.'&token='.$token.' ">http://localhost/cms/reset.php?email='.$email.'&token=' . $token. '</a>
+                        
+                        </p>';
                     
                         $mail->send();
-                        echo 'Message has been sent';
+                        
+                        $emailSent = true;
+
                     } catch (Exception $e) {
                         echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
                     }
@@ -83,7 +88,7 @@ require './vendor/autoload.php';
                     <div class="panel-body">
                         <div class="text-center">
 
-
+                            <?php if(!isset($emailSent)):  ?>
                                 <h3><i class="fa fa-lock fa-4x"></i></h3>
                                 <h2 class="text-center">Forgot Password?</h2>
                                 <p>You can reset your password here.</p>
@@ -108,6 +113,13 @@ require './vendor/autoload.php';
                                     </form>
 
                                 </div><!-- Body-->
+                            
+                            <?php else:  ?>
+
+                            <h2>Please check your email</h2>
+
+                            <?php endif; ?>
+
 
                         </div>
                     </div>
