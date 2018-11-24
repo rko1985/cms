@@ -3,3 +3,10 @@
     background: #000 !important;
 
 }
+
+a.like, a.unlike, p.likes, p.login-to-post{
+
+    font-size: 22px !important; 
+
+}
+

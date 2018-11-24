@@ -3,6 +3,17 @@
 
 <?php 
 
+require 'vendor/autoload.php';
+$dotenv = new \Dotenv\Dotenv('./');
+$dotenv->load();
+
+$options = array(
+    'cluster' => 'us2',
+    'useTLS' => true
+  );
+
+$pusher = new Pusher\Pusher(getenv('APP_KEY'),getenv('APP_SECRET'),getenv('APP_ID'),$options);
+
 if($_SERVER['REQUEST_METHOD'] == "POST"){
 
     $username = trim($_POST['username']);
@@ -66,6 +77,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     if(empty($error)){
 
         register_user($username, $email, $password);
+
+        $data['message'] = $username;
+
+        $pusher->trigger('notifications','new_user', $data);
 
         login_user($username, $password);
 

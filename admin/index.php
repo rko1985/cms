@@ -189,3 +189,33 @@
 
     <!-- /#page-wrapper -->  
     <?php include('includes/admin_footer.php'); ?>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://js.pusher.com/4.3/pusher.min.js"></script>
+
+    <script>
+    
+        $(document).ready(function(){
+
+            var pusher = new Pusher('18c6de881a4fb88364f6', {
+
+                cluster: 'us2',
+                forceTLS: true
+
+            });
+
+            var notificationChannel = pusher.subscribe('notifications');
+            notificationChannel.bind('new_user', function(notification){
+
+                var message = notification.message;
+
+                toastr.success(`${message} just registered`);
+
+                console.log(message);
+            
+            });
+
+        });
+    
+    </script>
