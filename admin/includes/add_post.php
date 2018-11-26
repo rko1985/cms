@@ -4,6 +4,7 @@
 
         $post_title = escape($_POST['title']); //example of escape function in use
         $post_user = $_POST['post_user'];
+        $user_id = loggedInUserId();
         $post_category_id = $_POST['post_category'];
         $post_status = $_POST['post_status'];
 
@@ -16,8 +17,8 @@
 
         move_uploaded_file($post_image_temp, "../images/$post_image");
 
-        $query = "INSERT INTO posts(post_category_id, post_title, post_user, post_date, post_image, post_content, post_tags, post_status) ";
-        $query .= "VALUES({$post_category_id},'{$post_title}','{$post_user}',now(), '{$post_image}','{$post_content}','{$post_tags}', '{$post_status}' ) ";
+        $query = "INSERT INTO posts(post_category_id, user_id, post_title, post_user, post_date, post_image, post_content, post_tags, post_status) ";
+        $query .= "VALUES({$post_category_id}, {$user_id}, '{$post_title}','{$post_user}',now(), '{$post_image}','{$post_content}','{$post_tags}', '{$post_status}' ) ";
 
         $create_post_query = mysqli_query($connection, $query);
 
